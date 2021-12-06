@@ -13,12 +13,4 @@
 					the GameBoy Emulator
 							m0x <3
 */
-package main
-
-import (
-	"fmt"
-)
-
-func main() {
-	fmt.Println("gemu")
-}
+package cartridge
