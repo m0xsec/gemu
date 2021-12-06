@@ -13,7 +13,7 @@
 					the GameBoy Emulator
 							m0x <3
 ```
-![<3](https://github.com/m0xxz/gemu/blob/main/assets/leaphere_pokemon_yellow.jpeg?raw=true)
+![<3](https://github.com/m0xxz/gemu/blob/main/assets/gbc.gif?raw=true)
 
 `gemu` is a GameBoy (DMG-01) emulator and research project. It is very much under active development.
 
