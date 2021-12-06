@@ -14,3 +14,6 @@
 							m0x <3
 */
 package cpu
+
+type CPU struct {
+}

@@ -14,3 +14,10 @@
 							m0x <3
 */
 package gb
+
+import "gemu/pkg/cpu"
+
+// GameBoy
+type GameBoy struct {
+	cpu *cpu.CPU
+}
