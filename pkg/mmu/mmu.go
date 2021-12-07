@@ -42,6 +42,9 @@ FFFF	FFFF	Interrupt Enable register (IE)
 type MMU struct {
 	// The GameBoy has a memory map from 0x0000 - 0xFFFF
 	memory [0xFFFF]byte
+
+	// TODO: Have different mapped sections of memory defined here?
+	// HighRAM, OAM, ROM Banks, etc?
 }
 
 // Initializes the MMU
