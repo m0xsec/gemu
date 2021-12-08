@@ -15,9 +15,13 @@
 */
 package gb
 
-import "gemu/pkg/cpu"
+import (
+	"gemu/pkg/cpu"
+	"gemu/pkg/mmu"
+)
 
 // GameBoy
 type GameBoy struct {
 	cpu *cpu.CPU
+	mmu *mmu.MMU
 }
