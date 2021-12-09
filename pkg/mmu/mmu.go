@@ -67,7 +67,11 @@ type MMU struct {
 }
 
 // Initializes the MMU
-func (*MMU) init() {
+func (mmu *MMU) Init() {
+	// Zero out memory array
+	for i := 0; i < len(mmu.memory); i++ {
+		mmu.memory[i] = 0x00
+	}
 
 }
 

@@ -25,3 +25,7 @@ type GameBoy struct {
 	cpu *cpu.CPU
 	mmu *mmu.MMU
 }
+
+func (gb *GameBoy) Init() {
+	gb.mmu.Init()
+}
