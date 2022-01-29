@@ -20,7 +20,7 @@ import (
 	"gemu/pkg/mmu"
 )
 
-// GameBoy
+// GameBoy represents the GameBoy hardware
 type GameBoy struct {
 	cpu *cpu.CPU
 	mmu *mmu.MMU

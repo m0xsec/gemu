@@ -15,8 +15,9 @@
 */
 package cpu
 
-import "gemu/pkg/mmu"
-
 type CPU struct {
-	mmu *mmu.MMU
+}
+
+// Initializes the CPU
+func (cpu *CPU) Init() {
 }
