@@ -17,6 +17,7 @@ package main
 
 import (
 	"fmt"
+	"gemu/pkg/gb"
 
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/ttf"
@@ -27,6 +28,8 @@ func main() {
 
 	// TODO: Initialize GameBoy
 	// Subsystems, etc, etc
+	gemu := gb.GameBoy{}
+	gemu.Init()
 
 	// Initialize SDL2
 	fmt.Println("Initializing SDL2...")

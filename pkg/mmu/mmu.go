@@ -54,6 +54,37 @@ const (
 	IE                       // Interrupt Enable register (IE)
 )
 
+func (e MemRegion) String() string {
+	switch e {
+	case ROM0:
+		return "ROM0"
+	case ROMX:
+		return "ROMX"
+	case VRAM:
+		return "VRAM"
+	case SRAM:
+		return "SRAM"
+	case WRAM0:
+		return "WRAM0"
+	case WRAMX:
+		return "WRAMX"
+	case Echo:
+		return "Echo"
+	case OAM:
+		return "OAM"
+	case Unused:
+		return "Usused"
+	case IO:
+		return "IO"
+	case HRAM:
+		return "HRAM"
+	case IE:
+		return "IE"
+	default:
+		return fmt.Sprintf("%d", int(e))
+	}
+}
+
 // MMU is the Memory Management Unit. While the GameBoy did not have an actual
 // MMU, it makes sense for our emulator. The GameBoy uses Memory Mapping to talk to
 // various subsystems. The MMU will be responsible for handling that mapping and will
@@ -74,9 +105,6 @@ func (mmu *MMU) Init() {
 	}
 
 }
-
-// TODO: Write functions for reading and writing to memory, while handling and respecting
-// memory mapping rules
 
 // MapAddr maps the given memory address to the correct MemRegion
 func (*MMU) mapAddr(addr uint16) MemRegion {
@@ -108,4 +136,23 @@ func (*MMU) mapAddr(addr uint16) MemRegion {
 
 	err := fmt.Sprintf("[MapAddr] Can't map %x to region", addr)
 	panic(err)
+}
+
+// TODO: Need to make sure read/write is respecting memory mapping rules & other restrictions
+
+// Write will write an 8-bit value to the given memory address
+func (mmu *MMU) Write(addr uint16, value uint8) {
+	// Do not write to prohibited locations of memory
+	if mmu.mapAddr(addr) != MemRegion(Echo) && mmu.mapAddr(addr) != MemRegion(Unused) {
+		mmu.memory[addr] = value
+		fmt.Printf("[MMU Write] Wrote 0x%x to %s\n", value, MemRegion(mmu.mapAddr(addr)))
+	} else {
+		err := fmt.Sprintf("[MMU Write] Can't write to protected memory region 0x%x (%s)", addr, MemRegion(mmu.mapAddr(addr)))
+		panic(err)
+	}
+}
+
+// Read will read from the given memory address
+func (mmu *MMU) Read(addr uint16) uint8 {
+	return mmu.memory[addr]
 }
