@@ -30,5 +30,6 @@ func (gb *GameBoy) Init() {
 	gb.cpu.Init()
 	gb.mmu.Init()
 
+	// Testing
 	gb.mmu.Write(0xC000, 0xFD)
 }

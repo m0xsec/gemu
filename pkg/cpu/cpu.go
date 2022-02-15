@@ -15,6 +15,7 @@
 */
 package cpu
 
+// Sharp SM83 CPU - https://gbdev.io/gb-opcodes/optables/errata
 type CPU struct {
 }
 

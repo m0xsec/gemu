@@ -14,3 +14,7 @@
 							m0x <3
 */
 package cpu
+
+// https://gbdev.io/gb-opcodes/optables/
+// https://gbdev.io/gb-opcodes/Opcodes.json
+// TODO: Could build the opcode table from the Opcodes.json file?
