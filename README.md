@@ -1,7 +1,7 @@
 <table>
 <td>
 	
-![<3](https://github.com/m0xxz/gemu/blob/main/assets/gbc.gif?raw=true)
+![<3](https://github.com/m0xsec/gemu/blob/main/assets/gbc.gif?raw=true)
 								 
 </td>
 <td>
