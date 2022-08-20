@@ -80,16 +80,16 @@ func main() {
 		// GameBoy CPU/Emulation Cycle (Fetch/Decode/Execute)
 		err := gemu.Cycle()
 		if err != nil {
-			fmt.Println(err)
+			fmt.Printf("GB Cycle - Error: %s", err)
 		}
 
-		//renderer.SetDrawColor(0, 0, 0, 255)
-		//renderer.Clear()
+		renderer.SetDrawColor(0, 0, 0, 255)
+		renderer.Clear()
 
 		// TODO: Rendering
 
 		// Render to screen <3
-		//renderer.Present()
+		renderer.Present()
 
 		// Event handling
 		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {

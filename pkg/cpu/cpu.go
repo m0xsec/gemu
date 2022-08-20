@@ -73,18 +73,30 @@ func (cpu *CPU) Init(mmu *mmu.MMU) {
 	cpu.Mem = mmu
 	cpu.Mem.Init()
 
-	// Set initial registers to 0x00
-	// This will allow our boot ROM will set these to what is expected after booting
-	cpu.Reg.PC = 0x00
-	cpu.Reg.SP = 0x00
-	cpu.Reg.A = 0x00
-	cpu.Reg.F = 0x00
+	/*
+		Set initial registers to 0x00 - The DMG-01 power up sequence, per PanDocs, is:
+		https://gbdev.io/pandocs/Power_Up_Sequence.html
+		A = 0x01
+		F = 0xB0
+		B = 0x00
+		C = 0x13
+		D = 0x00
+		E = 0xD8
+		H = 0x01
+		L = 0x4D
+		PC = 0x0100
+		SP = 0xFFFE
+	*/
+	cpu.Reg.A = 0x01
+	cpu.Reg.F = 0xB0
 	cpu.Reg.B = 0x00
-	cpu.Reg.C = 0x00
+	cpu.Reg.C = 0x13
 	cpu.Reg.D = 0x00
-	cpu.Reg.E = 0x00
-	cpu.Reg.H = 0x00
-	cpu.Reg.L = 0x00
+	cpu.Reg.E = 0xD8
+	cpu.Reg.H = 0x01
+	cpu.Reg.L = 0x4D
+	cpu.Reg.PC = 0x0100
+	cpu.Reg.SP = 0xFFFE
 
 	// 4.194304 MHz was the highest freq the DMG could run at.
 	cpu.MaxCycles = 4194304
@@ -100,4 +112,5 @@ func (cpu *CPU) LoadBootROM() {
 		//fmt.Printf("Loading boot ROM at 0x%X with value 0x%X\n", addr, val)
 		cpu.Mem.Write(uint16(addr), val)
 	}
+	cpu.Reg.PC = 0x0000
 }
