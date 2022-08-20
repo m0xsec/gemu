@@ -32,6 +32,7 @@ package cpu
 
 // https://gbdev.io/gb-opcodes/optables/
 // https://gbdev.io/gb-opcodes/Opcodes.json
+// https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
 // TODO: Could build the opcode table from the Opcodes.json file?
 
 var opcodes = map[byte]struct {
