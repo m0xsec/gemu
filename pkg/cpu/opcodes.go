@@ -823,6 +823,42 @@ var opcodes = map[byte]struct {
 	// Cycles: n
 	// Bytes: n
 	// Flags: Z N H C
+
+	// 0x01 - LD BC, d16 - Load 16-bit immediate value d16 into register BC
+	// Cycles: 12
+	// Bytes: 3
+	// Flags: - - - -
+	0x01: {name: "LD BC, d16", cycles: 12, execute: func(cpu *CPU) {
+		cpu.SetBC(uint16(cpu.mem.Read(cpu.reg.PC+1)) | uint16(cpu.mem.Read(cpu.reg.PC+2))<<8)
+		cpu.reg.PC += 3
+	}},
+
+	// 0x11 - LD DE, d16 - Load 16-bit immediate value d16 into register DE
+	// Cycles: 12
+	// Bytes: 3
+	// Flags: - - - -
+	0x11: {name: "LD DE, d16", cycles: 12, execute: func(cpu *CPU) {
+		cpu.SetDE(uint16(cpu.mem.Read(cpu.reg.PC+1)) | uint16(cpu.mem.Read(cpu.reg.PC+2))<<8)
+		cpu.reg.PC += 3
+	}},
+
+	// 0x21 - LD HL, d16 - Load 16-bit immediate value d16 into register HL
+	// Cycles: 12
+	// Bytes: 3
+	// Flags: - - - -
+	0x21: {name: "LD HL, d16", cycles: 12, execute: func(cpu *CPU) {
+		cpu.SetHL(uint16(cpu.mem.Read(cpu.reg.PC+1)) | uint16(cpu.mem.Read(cpu.reg.PC+2))<<8)
+		cpu.reg.PC += 3
+	}},
+
+	// 0x31 - LD SP, d16 - Load 16-bit immediate value d16 into register SP
+	// Cycles: 12
+	// Bytes: 3
+	// Flags: - - - -
+	0x31: {name: "LD SP, d16", cycles: 12, execute: func(cpu *CPU) {
+		cpu.reg.SP = uint16(cpu.mem.Read(cpu.reg.PC+1)) | uint16(cpu.mem.Read(cpu.reg.PC+2))<<8
+		cpu.reg.PC += 3
+	}},
 	// ...
 
 	// TODO: 8bit arithmetic/logic instructions
