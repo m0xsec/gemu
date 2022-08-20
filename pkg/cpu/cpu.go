@@ -121,6 +121,9 @@ func (cpu *CPU) Step() error {
 	cpu.cycles += instruction.cycles
 	instruction.execute(cpu)
 
+	// Bits 0-3 of the Flag register are always zero, as they are unused.
+	cpu.reg.F &^= FlagUnused
+
 	return nil
 }
 
