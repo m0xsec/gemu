@@ -30,6 +30,8 @@
 */
 package cpu
 
+import "fmt"
+
 // https://gbdev.io/gb-opcodes/optables/
 // https://gbdev.io/gb-opcodes/Opcodes.json
 // https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
@@ -1004,14 +1006,24 @@ var opcodes = map[uint8]struct {
 	// Flags: Z N H C
 	// ...
 
-	// TODO: 8bit rotation/shift instructions
+	// TODO: 8bit rotation/shift instructions (CB prefix operations)
 	/////////////////////////////////////////////////////////////////////////////////////////
 	// 8bit rotation/shift instructions
 	// Opcode - Mnemonic - Description
 	// Cycles: n
 	// Bytes: n
 	// Flags: Z N H C
-	// ...
+
+	// 0xCB - PREFIX CB - CB prefix operation
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: - - - -
+	0xCB: {name: "PREFIX CB", cycles: 4, execute: func(cpu *CPU) {
+		fmt.Println("[Warning] CB prefix operations not implemented")
+		/*cb_op := cpu.mem.Read(cpu.reg.PC + 1)
+		fmt.Printf("cb_op: %02X\n", cb_op)
+		cpu.reg.PC += 2*/
+	}},
 
 	// TODO: Jumps/calls instructions
 	/////////////////////////////////////////////////////////////////////////////////////////
