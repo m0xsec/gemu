@@ -113,6 +113,7 @@ func (cpu *CPU) Step() error {
 	op := cpu.fetch()
 	instruction, valid := opcodes[op]
 	if !valid {
+		cpu.reg.PC++
 		return fmt.Errorf("opcode not implmented: 0x%x", op)
 	}
 
@@ -126,6 +127,5 @@ func (cpu *CPU) Step() error {
 // Fetches the next opcode from memory
 func (cpu *CPU) fetch() uint8 {
 	op := cpu.mem.Read(cpu.reg.PC)
-	cpu.reg.PC++
 	return op
 }
