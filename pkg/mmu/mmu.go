@@ -106,12 +106,13 @@ func (e MemRegion) String() string {
 // be the only thing to actually access the memory directly.
 type MMU struct {
 	// The GameBoy has a memory map from 0x0000 - 0xFFFF
-	memory [0xFFFF]byte
+	memory [0xFFFF + 1]byte
 
 	// TODO: Have different mapped sections of memory defined here?
 	// HighRAM, OAM, ROM Banks, etc?
 }
 
+// Dump will write the contents of memeory to stdout
 func (mmu *MMU) Dump() {
 	for i := 0; i < len(mmu.memory); i++ {
 		fmt.Printf("%x ", mmu.memory[i])
@@ -130,7 +131,9 @@ func (mmu *MMU) Init() {
 
 // MapAddr maps the given memory address to the correct MemRegion
 func (*MMU) mapAddr(addr uint16) MemRegion {
-	if addr >= 0x0000 && addr <= 0x3FFF {
+	//if addr >= 0x0000 && addr <= 0x3FFF {
+	// go static check - uint16 will always be larger than 0x0000
+	if addr <= 0x3FFF {
 		return ROM0
 	} else if addr >= 0x4000 && addr <= 0x7FFF {
 		return ROMX
@@ -156,7 +159,7 @@ func (*MMU) mapAddr(addr uint16) MemRegion {
 		return IE
 	}
 
-	err := fmt.Sprintf("[MapAddr] Can't map %x to region", addr)
+	err := fmt.Errorf("[MapAddr] Can't map %x to region", addr)
 	panic(err)
 }
 
@@ -169,12 +172,17 @@ func (mmu *MMU) Write(addr uint16, value uint8) {
 		mmu.memory[addr] = value
 		fmt.Printf("[MMU Write] Wrote 0x%x to %s[0x%x]\n", value, MemRegion(mmu.mapAddr(addr)), addr)
 	} else {
-		err := fmt.Sprintf("[MMU Write] Can't write to protected memory region 0x%x (%s)", addr, MemRegion(mmu.mapAddr(addr)))
+		err := fmt.Errorf("[MMU Write] Can't write to protected memory region 0x%x (%s)", addr, MemRegion(mmu.mapAddr(addr)))
 		panic(err)
 	}
 }
 
 // Read will read from the given memory address
 func (mmu *MMU) Read(addr uint16) uint8 {
-	return mmu.memory[addr]
+	if addr <= 0xFFFF {
+		return mmu.memory[addr]
+	} else {
+		err := fmt.Errorf("[MMU Read] Can't read outside of memory range 0x0000 - 0xFFFF")
+		panic(err)
+	}
 }

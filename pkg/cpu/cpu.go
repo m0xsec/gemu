@@ -130,5 +130,6 @@ func (cpu *CPU) Step() error {
 // Fetches the next opcode from memory
 func (cpu *CPU) fetch() uint8 {
 	op := cpu.mem.Read(cpu.reg.PC)
+	//fmt.Printf("PC = 0x%X, op = 0x%X\n", cpu.reg.PC, op)
 	return op
 }
