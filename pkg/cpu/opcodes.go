@@ -978,6 +978,15 @@ var opcodes = map[byte]struct {
 		cpu.reg.PC += 2
 	}},
 
+	// 0xF9 - LD SP, HL - Load register HL into register SP
+	// Cycles: 8
+	// Bytes: 1
+	// Flags: - - - -
+	0xF9: {name: "LD SP, HL", cycles: 8, execute: func(cpu *CPU) {
+		cpu.reg.SP = cpu.HL()
+		cpu.reg.PC++
+	}},
+
 	// ...
 
 	// TODO: 8bit arithmetic/logic instructions
