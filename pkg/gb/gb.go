@@ -31,7 +31,6 @@
 package gb
 
 import (
-	"fmt"
 	"gemu/pkg/cpu"
 	"gemu/pkg/mmu"
 )
@@ -51,21 +50,8 @@ func (gb *GameBoy) Init() {
 
 // GameBoy CPU/Emulation Cycle (Fetch/Decode/Execute)
 func (gb *GameBoy) Cycle() error {
+	// Fetch, Decode, and Execute
+	return gb.cpu.Step()
 
-	// Fetch opcode
-	op := gb.mmu.Read(gb.cpu.Reg.PC)
-	gb.cpu.Reg.PC++
-	fmt.Printf("Opcode: 0x%x\n", op)
-
-	// Decode opcode
-	instruction, valid := cpu.Opcodes[op]
-	if !valid {
-		return fmt.Errorf("opcode not implmented: 0x%x", op)
-	}
-
-	// Execute opcode
-	gb.cpu.Cycles += instruction.Cycles
-	instruction.Execute(gb.cpu)
-
-	return nil
+	// TODO: other stuff will happen here, of course...
 }

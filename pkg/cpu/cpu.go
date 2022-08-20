@@ -39,39 +39,23 @@ import (
 // Sharp SM83 CPU - https://gbdev.io/gb-opcodes/optables/errata
 type CPU struct {
 	// Registers
-	Reg Registers
+	reg Registers
 
 	// Memory
-	Mem *mmu.MMU
+	mem *mmu.MMU
 
 	// Clock Cycles
-	Cycles    uint32
-	MaxCycles uint32
+	cycles    uint32
+	maxCycles uint32
 
 	// Halt flag
-	Halted bool
+	halted bool
 }
-
-// Registers
-type Registers struct {
-	A, F, B, C, D, E, H, L uint8
-	SP, PC                 uint16
-}
-
-// Flags
-const (
-	FlagZ      = uint8(1 << 7)
-	FlagN      = uint8(1 << 6)
-	FlagH      = uint8(1 << 5)
-	FlagC      = uint8(1 << 4)
-	FlagMask   = uint8(FlagZ | FlagN | FlagH | FlagC)
-	FlagUnused = uint8(0xF)
-)
 
 // Initializes the CPU
 func (cpu *CPU) Init(mmu *mmu.MMU) {
-	cpu.Mem = mmu
-	cpu.Mem.Init()
+	cpu.mem = mmu
+	cpu.mem.Init()
 
 	/*
 		Set initial registers to 0x00 - The DMG-01 power up sequence, per PanDocs, is:
@@ -89,19 +73,21 @@ func (cpu *CPU) Init(mmu *mmu.MMU) {
 
 		This should be what the boot ROM does.
 	*/
-	cpu.Reg.A = 0x00
-	cpu.Reg.F = 0x00
-	cpu.Reg.B = 0x00
-	cpu.Reg.C = 0x00
-	cpu.Reg.D = 0x00
-	cpu.Reg.E = 0x00
-	cpu.Reg.H = 0x00
-	cpu.Reg.L = 0x00
-	cpu.Reg.PC = 0x0000
-	cpu.Reg.SP = 0x0000
+	cpu.reg.A = 0x00
+	cpu.reg.F = 0x00
+	cpu.reg.B = 0x00
+	cpu.reg.C = 0x00
+	cpu.reg.D = 0x00
+	cpu.reg.E = 0x00
+	cpu.reg.H = 0x00
+	cpu.reg.L = 0x00
+	cpu.reg.PC = 0x0000
+	cpu.reg.SP = 0x0000
 
 	// 4.194304 MHz was the highest freq the DMG could run at.
-	cpu.MaxCycles = 4194304
+	cpu.maxCycles = 4194304
+
+	cpu.halted = false
 
 	// Load the boot ROM into memory
 	fmt.Println("Loading boot ROM...")
@@ -115,7 +101,31 @@ func (cpu *CPU) Init(mmu *mmu.MMU) {
 func (cpu *CPU) LoadBootROM() {
 	for addr, val := range boot.BootRom {
 		//fmt.Printf("Loading boot ROM at 0x%X with value 0x%X\n", addr, val)
-		cpu.Mem.Write(uint16(addr), val)
+		cpu.mem.Write(uint16(addr), val)
 	}
-	cpu.Reg.PC = 0x0000
+	cpu.reg.PC = 0x0000
+}
+
+// Step the CPU for a single instruction - Fetch, decode, execute
+func (cpu *CPU) Step() error {
+	//TODO: Handle CPU halting
+
+	op := cpu.fetch()
+	instruction, valid := opcodes[op]
+	if !valid {
+		return fmt.Errorf("opcode not implmented: 0x%x", op)
+	}
+
+	// Execute opcode
+	cpu.cycles += instruction.cycles
+	instruction.execute(cpu)
+
+	return nil
+}
+
+// Fetches the next opcode from memory
+func (cpu *CPU) fetch() uint8 {
+	op := cpu.mem.Read(cpu.reg.PC)
+	cpu.reg.PC++
+	return op
 }

@@ -41,6 +41,9 @@ import (
 func main() {
 	fmt.Println("gemu")
 
+	// TODO: Put SDL rendering and emu in seperate goroutines - Use channels to communicate between goroutines
+	// Example: https://github.com/L-P/poussin/blob/master/main.go
+
 	// TODO: Initialize GameBoy
 	// Subsystems, etc, etc
 	gemu := gb.GameBoy{}
@@ -80,7 +83,7 @@ func main() {
 		// GameBoy CPU/Emulation Cycle (Fetch/Decode/Execute)
 		err := gemu.Cycle()
 		if err != nil {
-			fmt.Printf("GB Cycle - Error: %s", err)
+			fmt.Printf("[GB Cycle] Error: %s\n", err)
 		}
 
 		renderer.SetDrawColor(0, 0, 0, 255)
