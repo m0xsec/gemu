@@ -34,14 +34,14 @@ package cpu
 // Most registers are 8bit, but some can be used as 16bit.
 // AF, BC, DE, HL are such registers.
 //
-// A - Accumulator
+// A - Accumulator (Used for arithmetic operations)
 // F - Flags
-// B - B (Can be used as 16 bit register - BC)
-// C - C (Can be used as 16 bit register - BC)
-// D - D (Can be used as 16 bit register - DE)
-// E - E (Can be used as 16 bit register - DE)
-// H - H (Can be used as 16 bit register - HL)
-// L - L (Can be used as 16 bit register - HL)
+// B - B General Purpose (Can be used as 16 bit register - BC)
+// C - C General Purpose (Can be used as 16 bit register - BC)
+// D - D General Purpose (Can be used as 16 bit register - DE)
+// E - E General Purpose (Can be used as 16 bit register - DE)
+// H - H General Purpose (Can be used as 16 bit register - HL)
+// L - L General Purpose (Can be used as 16 bit register - HL)
 // SP - Stack Pointer
 // PC - Program Counter
 type Registers struct {
