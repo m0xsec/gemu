@@ -952,6 +952,32 @@ var opcodes = map[byte]struct {
 		cpu.reg.PC += 3
 	}},
 
+	// 0xF8 - LD HL, SP+r8 - Load SP+r8 into register HL
+	// Cycles: 12
+	// Bytes: 2
+	// Flags: 0 0 H C
+	0xF8: {name: "LD HL, SP+r8", cycles: 12, execute: func(cpu *CPU) {
+		// Bit clear flags
+		cpu.reg.F &= ^FlagMask
+
+		// Get the value of r8 and SP+r8
+		r8 := uint8(cpu.mem.Read(cpu.reg.PC + 1))
+		spr8 := cpu.reg.SP + uint16(r8)
+
+		// Set flags
+		if ((cpu.reg.SP & 0xF) + (uint16(r8) & 0xF)) > 0xF {
+			cpu.reg.F |= FlagH
+		}
+		if ((cpu.reg.SP & 0xFF) + (uint16(r8) & 0xFF)) > 0xFF {
+			cpu.reg.F |= FlagC
+		}
+
+		// Set HL
+		cpu.SetHL(spr8)
+
+		cpu.reg.PC += 2
+	}},
+
 	// ...
 
 	// TODO: 8bit arithmetic/logic instructions
