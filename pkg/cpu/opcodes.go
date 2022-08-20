@@ -44,8 +44,8 @@ var opcodes = map[byte]struct {
 	/////////////////////////////////////////////////////////////////////////////////////////
 	// 8-bit load/store/move instructions
 	// Opcode - Mnemonic - Description
-	// Cycles:
-	// Bytes:
+	// Cycles: n
+	// Bytes: n
 	// Flags: Z N H C
 
 	// 0x02 - LD (BC), A - Load A into memory at address BC
@@ -817,21 +817,62 @@ var opcodes = map[byte]struct {
 	}},
 
 	// TODO: 16bit load/store/move instructions
+	/////////////////////////////////////////////////////////////////////////////////////////
+	// 16bit load/store/move instructions
+	// Opcode - Mnemonic - Description
+	// Cycles: n
+	// Bytes: n
+	// Flags: Z N H C
 	// ...
 
 	// TODO: 8bit arithmetic/logic instructions
+	/////////////////////////////////////////////////////////////////////////////////////////
+	// 8bit arithmetic/logic instructions
+	// Opcode - Mnemonic - Description
+	// Cycles: n
+	// Bytes: n
+	// Flags: Z N H C
 	// ...
 
 	// TODO: 16bit arithmetic/logic instructions
+	/////////////////////////////////////////////////////////////////////////////////////////
+	// 16bit arithmetic/logic instructions
+	// Opcode - Mnemonic - Description
+	// Cycles: n
+	// Bytes: n
+	// Flags: Z N H C
 	// ...
 
 	// TODO: 8bit rotation/shift instructions
+	/////////////////////////////////////////////////////////////////////////////////////////
+	// 8bit rotation/shift instructions
+	// Opcode - Mnemonic - Description
+	// Cycles: n
+	// Bytes: n
+	// Flags: Z N H C
 	// ...
 
 	// TODO: Jumps/calls instructions
+	/////////////////////////////////////////////////////////////////////////////////////////
+	// Jumps/calls instructions
+	// Opcode - Mnemonic - Description
+	// Cycles: n
+	// Bytes: n
+	// Flags: Z N H C
 	// ...
 
 	// TODO: Misc/control instructions
+	/////////////////////////////////////////////////////////////////////////////////////////
+	// Misc/control instructions
+	// Opcode - Mnemonic - Description
+	// Cycles: n
+	// Bytes: n
+	// Flags: Z N H C
+
+	// 0x00 - NOP - No operation
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: - - - -
 	0x00: {name: "NOP", cycles: 4, execute: func(cpu *CPU) { cpu.reg.PC++ }},
 	// ...
 }
