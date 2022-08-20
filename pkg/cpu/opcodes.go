@@ -901,6 +901,46 @@ var opcodes = map[byte]struct {
 		cpu.reg.PC++
 	}},
 
+	// 0xC5 - PUSH BC - Push register BC onto stack
+	// Cycles: 16
+	// Bytes: 1
+	// Flags: - - - -
+	0xC5: {name: "PUSH BC", cycles: 16, execute: func(cpu *CPU) {
+		cpu.stackPush(cpu.reg.B)
+		cpu.stackPush(cpu.reg.C)
+		cpu.reg.PC++
+	}},
+
+	// 0xD5 - PUSH DE - Push register DE onto stack
+	// Cycles: 16
+	// Bytes: 1
+	// Flags: - - - -
+	0xD5: {name: "PUSH DE", cycles: 16, execute: func(cpu *CPU) {
+		cpu.stackPush(cpu.reg.D)
+		cpu.stackPush(cpu.reg.E)
+		cpu.reg.PC++
+	}},
+
+	// 0xE5 - PUSH HL - Push register HL onto stack
+	// Cycles: 16
+	// Bytes: 1
+	// Flags: - - - -
+	0xE5: {name: "PUSH HL", cycles: 16, execute: func(cpu *CPU) {
+		cpu.stackPush(cpu.reg.H)
+		cpu.stackPush(cpu.reg.L)
+		cpu.reg.PC++
+	}},
+
+	// 0xF5 - PUSH AF - Push register AF onto stack
+	// Cycles: 16
+	// Bytes: 1
+	// Flags: - - - -
+	0xF5: {name: "PUSH AF", cycles: 16, execute: func(cpu *CPU) {
+		cpu.stackPush(cpu.reg.A)
+		cpu.stackPush(cpu.reg.F)
+		cpu.reg.PC++
+	}},
+
 	// ...
 
 	// TODO: 8bit arithmetic/logic instructions
