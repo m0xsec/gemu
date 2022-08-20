@@ -816,7 +816,6 @@ var opcodes = map[byte]struct {
 		cpu.reg.PC += 3
 	}},
 
-	// TODO: 16bit load/store/move instructions
 	/////////////////////////////////////////////////////////////////////////////////////////
 	// 16bit load/store/move instructions
 	// Opcode - Mnemonic - Description
@@ -986,8 +985,6 @@ var opcodes = map[byte]struct {
 		cpu.reg.SP = cpu.HL()
 		cpu.reg.PC++
 	}},
-
-	// ...
 
 	// TODO: 8bit arithmetic/logic instructions
 	/////////////////////////////////////////////////////////////////////////////////////////
