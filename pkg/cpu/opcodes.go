@@ -859,6 +859,48 @@ var opcodes = map[byte]struct {
 		cpu.reg.SP = uint16(cpu.mem.Read(cpu.reg.PC+1)) | uint16(cpu.mem.Read(cpu.reg.PC+2))<<8
 		cpu.reg.PC += 3
 	}},
+
+	// 0xC1 - POP BC - Pop register BC from stack
+	// Cycles: 12
+	// Bytes: 1
+	// Flags: - - - -
+	0xC1: {name: "POP BC", cycles: 12, execute: func(cpu *CPU) {
+		cpu.reg.C = cpu.stackPop()
+		cpu.reg.B = cpu.stackPop()
+		cpu.reg.PC++
+	}},
+
+	// 0xD1 - POP DE - Pop register DE from stack
+	// Cycles: 12
+	// Bytes: 1
+	// Flags: - - - -
+	0xD1: {name: "POP DE", cycles: 12, execute: func(cpu *CPU) {
+		cpu.reg.E = cpu.stackPop()
+		cpu.reg.D = cpu.stackPop()
+		cpu.reg.PC++
+	}},
+
+	// 0xE1 - POP HL - Pop register HL from stack
+	// Cycles: 12
+	// Bytes: 1
+	// Flags: - - - -
+	0xE1: {name: "POP HL", cycles: 12, execute: func(cpu *CPU) {
+		cpu.reg.L = cpu.stackPop()
+		cpu.reg.H = cpu.stackPop()
+		cpu.reg.PC++
+	}},
+
+	// 0xF1 - POP AF - Pop register AF from stack
+	// Cycles: 12
+	// Bytes: 1
+	// Flags: Z N H C
+	0xF1: {name: "POP AF", cycles: 12, execute: func(cpu *CPU) {
+		// Since the F register (Flag register) is popped, all flags are changed.
+		cpu.reg.F = cpu.stackPop()
+		cpu.reg.A = cpu.stackPop()
+		cpu.reg.PC++
+	}},
+
 	// ...
 
 	// TODO: 8bit arithmetic/logic instructions
