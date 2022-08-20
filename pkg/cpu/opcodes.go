@@ -941,6 +941,17 @@ var opcodes = map[byte]struct {
 		cpu.reg.PC++
 	}},
 
+	// 0x08 - LD (a16), SP - Load SP into memory address a16
+	// Cycles: 20
+	// Bytes: 3
+	// Flags: - - - -
+	0x08: {name: "LD (a16), SP", cycles: 20, execute: func(cpu *CPU) {
+		addr := uint16(cpu.mem.Read(cpu.reg.PC+1)) + uint16(cpu.mem.Read(cpu.reg.PC+2))<<8
+		cpu.mem.Write(addr, uint8(cpu.reg.SP&0xFF))
+		cpu.mem.Write(addr+1, uint8(cpu.reg.SP>>8)&0xFF)
+		cpu.reg.PC += 3
+	}},
+
 	// ...
 
 	// TODO: 8bit arithmetic/logic instructions
