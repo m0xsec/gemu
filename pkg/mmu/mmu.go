@@ -1,17 +1,19 @@
 /*
-	 ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄       ▄▄  ▄         ▄
-	▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░▌     ▐░░▌▐░▌       ▐░▌
-	▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀▀▀ ▐░▌░▌   ▐░▐░▌▐░▌       ▐░▌
-	▐░▌          ▐░▌          ▐░▌▐░▌ ▐░▌▐░▌▐░▌       ▐░▌
-	▐░▌ ▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌ ▐░▐░▌ ▐░▌▐░▌       ▐░▌
-	▐░▌▐░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌  ▐░▌▐░▌       ▐░▌
-	▐░▌ ▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░▌   ▀   ▐░▌▐░▌       ▐░▌
-	▐░▌       ▐░▌▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌
-	▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄█░▌
-	▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌
-	▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀
-					the GameBoy Emulator
-							m0x <3
+	▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄       ▄▄  ▄         ▄
+
+▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░▌     ▐░░▌▐░▌       ▐░▌
+▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀▀▀ ▐░▌░▌   ▐░▐░▌▐░▌       ▐░▌
+▐░▌          ▐░▌          ▐░▌▐░▌ ▐░▌▐░▌▐░▌       ▐░▌
+▐░▌ ▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌ ▐░▐░▌ ▐░▌▐░▌       ▐░▌
+▐░▌▐░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌  ▐░▌▐░▌       ▐░▌
+▐░▌ ▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░▌   ▀   ▐░▌▐░▌       ▐░▌
+▐░▌       ▐░▌▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌
+▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄█░▌
+▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌
+▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀
+
+	the GameBoy Emulator
+			m0x <3
 */
 package mmu
 
@@ -97,6 +99,13 @@ type MMU struct {
 	// HighRAM, OAM, ROM Banks, etc?
 }
 
+func (mmu *MMU) Dump() {
+	for i := 0; i < len(mmu.memory); i++ {
+		fmt.Printf("%x ", mmu.memory[i])
+	}
+	fmt.Println()
+}
+
 // Initializes the MMU
 func (mmu *MMU) Init() {
 	// Zero out memory array
@@ -145,7 +154,7 @@ func (mmu *MMU) Write(addr uint16, value uint8) {
 	// Do not write to prohibited locations of memory
 	if mmu.mapAddr(addr) != MemRegion(Echo) && mmu.mapAddr(addr) != MemRegion(Unused) {
 		mmu.memory[addr] = value
-		fmt.Printf("[MMU Write] Wrote 0x%x to %s\n", value, MemRegion(mmu.mapAddr(addr)))
+		fmt.Printf("[MMU Write] Wrote 0x%x to %s[0x%x]\n", value, MemRegion(mmu.mapAddr(addr)), addr)
 	} else {
 		err := fmt.Sprintf("[MMU Write] Can't write to protected memory region 0x%x (%s)", addr, MemRegion(mmu.mapAddr(addr)))
 		panic(err)
