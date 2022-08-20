@@ -35,7 +35,7 @@ package cpu
 // https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
 // TODO: Could build the opcode table from the Opcodes.json file?
 
-var opcodes = map[byte]struct {
+var opcodes = map[uint8]struct {
 	name    string
 	cycles  uint32
 	execute func(cpu *CPU)
