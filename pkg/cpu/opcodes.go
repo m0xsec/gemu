@@ -49,6 +49,7 @@ var opcodes = map[uint8]struct {
 	// Cycles: n
 	// Bytes: n
 	// Flags: Z N H C
+	/////////////////////////////////////////////////////////////////////////////////////////
 
 	// 0x02 - LD (BC), A - Load A into memory at address BC
 	// Cycles: 8
@@ -824,6 +825,7 @@ var opcodes = map[uint8]struct {
 	// Cycles: n
 	// Bytes: n
 	// Flags: Z N H C
+	/////////////////////////////////////////////////////////////////////////////////////////
 
 	// 0x01 - LD BC, d16 - Load 16-bit immediate value d16 into register BC
 	// Cycles: 12
@@ -995,6 +997,7 @@ var opcodes = map[uint8]struct {
 	// Cycles: n
 	// Bytes: n
 	// Flags: Z N H C
+	/////////////////////////////////////////////////////////////////////////////////////////
 	// ...
 
 	// TODO: 16bit arithmetic/logic instructions
@@ -1004,6 +1007,7 @@ var opcodes = map[uint8]struct {
 	// Cycles: n
 	// Bytes: n
 	// Flags: Z N H C
+	/////////////////////////////////////////////////////////////////////////////////////////
 	// ...
 
 	// TODO: 8bit rotation/shift instructions (CB prefix operations)
@@ -1013,17 +1017,22 @@ var opcodes = map[uint8]struct {
 	// Cycles: n
 	// Bytes: n
 	// Flags: Z N H C
+	/////////////////////////////////////////////////////////////////////////////////////////
 
 	// 0xCB - PREFIX CB - CB prefix operation
 	// Cycles: 4
 	// Bytes: 1
 	// Flags: - - - -
 	0xCB: {name: "PREFIX CB", cycles: 4, execute: func(cpu *CPU) {
+		//TODO: Need to actually implement the CB Prefix operations lol
 		fmt.Println("[Warning] CB prefix operations not implemented")
-		/*cb_op := cpu.mem.Read(cpu.reg.PC + 1)
-		fmt.Printf("cb_op: %02X\n", cb_op)
-		cpu.reg.PC += 2*/
+		cb_op := cpu.mem.Read(cpu.reg.PC + 1)
+		fmt.Printf("\t |--> cb_op: %02X\n", cb_op)
+		fmt.Printf("\t |--> This may cause Z80 UNUSED warnings\n")
+		cpu.reg.PC += 2
 	}},
+
+	///...
 
 	// TODO: Jumps/calls instructions
 	/////////////////////////////////////////////////////////////////////////////////////////
@@ -1032,6 +1041,7 @@ var opcodes = map[uint8]struct {
 	// Cycles: n
 	// Bytes: n
 	// Flags: Z N H C
+	/////////////////////////////////////////////////////////////////////////////////////////
 	// ...
 
 	// TODO: Misc/control instructions
@@ -1041,6 +1051,7 @@ var opcodes = map[uint8]struct {
 	// Cycles: n
 	// Bytes: n
 	// Flags: Z N H C
+	/////////////////////////////////////////////////////////////////////////////////////////
 
 	// 0x00 - NOP - No operation
 	// Cycles: 4
@@ -1048,4 +1059,58 @@ var opcodes = map[uint8]struct {
 	// Flags: - - - -
 	0x00: {name: "NOP", cycles: 4, execute: func(cpu *CPU) { cpu.reg.PC++ }},
 	// ...
+
+	/////////////////////////////////////////////////////////////////////////////////////////
+	// Unused Z80 opcodes
+	// TODO: Should I make the emulator crash or just ignore?
+	//
+	// These opcodes were not implemented in the Gameboy CPU,
+	// and will cause the Gameboy to lock up when used.
+	// https://gbdev.io/pandocs/CPU_Comparison_with_Z80.html
+	// https://clrhome.org/table/ (Z80 Opcode Set)
+	/////////////////////////////////////////////////////////////////////////////////////////
+	0xD3: {name: "OUT (a8), A", cycles: 4, execute: func(cpu *CPU) {
+		fmt.Println("[Z80 UNUSED] 0xD3 {OUT (a8), A} will cause the Gameboy to crash!")
+		cpu.reg.PC++
+	}},
+	0xDB: {name: "IN A, (a8)", cycles: 4, execute: func(cpu *CPU) {
+		fmt.Println("[Z80 UNUSED] 0xDB {IN A, (a8)} will cause the Gameboy to crash!")
+		cpu.reg.PC++
+	}},
+	0xDD: {name: "IX PREFIX", cycles: 4, execute: func(cpu *CPU) {
+		fmt.Println("[Z80 UNUSED] 0xDD {IX PREFIX} will cause the Gameboy to crash!")
+		cpu.reg.PC++
+	}},
+	0xE3: {name: "EX (SP), HL", cycles: 4, execute: func(cpu *CPU) {
+		fmt.Println("[Z80 UNUSED] 0xE3 {EX (SP), HL} will cause the Gameboy to crash!")
+		cpu.reg.PC++
+	}},
+	0xE4: {name: "CALL PO, a16", cycles: 4, execute: func(cpu *CPU) {
+		fmt.Println("[Z80 UNUSED] 0xE4 {CALL PO, a16} will cause the Gameboy to crash!")
+		cpu.reg.PC++
+	}},
+	0xEB: {name: "EX DE, HL", cycles: 4, execute: func(cpu *CPU) {
+		fmt.Println("[Z80 UNUSED] 0xEB {EX DE, HL} will cause the Gameboy to crash!")
+		cpu.reg.PC++
+	}},
+	0xEC: {name: "CALL PE, a16", cycles: 4, execute: func(cpu *CPU) {
+		fmt.Println("[Z80 UNUSED] 0xEC {CALL PE, a16} will cause the Gameboy to crash!")
+		cpu.reg.PC++
+	}},
+	0xED: {name: "MISC PREFIX (ED)", cycles: 4, execute: func(cpu *CPU) {
+		fmt.Println("[Z80 UNUSED] 0xED {MISC PREFIX (ED)} will cause the Gameboy to crash!")
+		cpu.reg.PC++
+	}},
+	0xF4: {name: "CALL P, a16", cycles: 4, execute: func(cpu *CPU) {
+		fmt.Println("[Z80 UNUSED] 0xF4 {CALL P, a16} will cause the Gameboy to crash!")
+		cpu.reg.PC++
+	}},
+	0xFC: {name: "CALL M, a16", cycles: 4, execute: func(cpu *CPU) {
+		fmt.Println("[Z80 UNUSED] 0xFC {CALL M, a16} will cause the Gameboy to crash!")
+		cpu.reg.PC++
+	}},
+	0xFD: {name: "IY PREFIX", cycles: 4, execute: func(cpu *CPU) {
+		fmt.Println("[Z80 UNUSED] 0xFD {IY PREFIX} will cause the Gameboy to crash!")
+		cpu.reg.PC++
+	}},
 }
