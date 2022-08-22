@@ -73,7 +73,7 @@ func (gb *GameBoy) Run(gbStopped chan struct{}, stopGB chan struct{}) error {
 	for emulating {
 		err := gb.cycle()
 		if err != nil {
-			//fmt.Printf("[GB Cycle] Error: %s\n", err)
+			fmt.Printf("[GB Cycle] Error: %s\n", err)
 		}
 
 	}
@@ -82,16 +82,16 @@ func (gb *GameBoy) Run(gbStopped chan struct{}, stopGB chan struct{}) error {
 }
 
 // Init initializes the GameBoy, bringing subsystems online
-func (gb *GameBoy) Init(nextFrame chan *sdl.Surface) {
+func (gb *GameBoy) Init(nextFrame chan *sdl.Surface) error {
 	// Setup a temporary warning message to indicate that the PPU is not yet implemented
 	font, err := ttf.OpenFont("./fonts/GameBoy.ttf", 20)
 	if err != nil {
-		fmt.Println("Failed to load font: " + err.Error())
+		return err
 	}
 
 	gb.ppuWarning, err = font.RenderUTF8Blended("PPU NOT YET IMPLEMENTED", sdl.Color{R: 255, G: 255, B: 255, A: 255})
 	if err != nil {
-		fmt.Println("Failed to render surface: " + err.Error())
+		return err
 	}
 	font.Close()
 
@@ -102,6 +102,8 @@ func (gb *GameBoy) Init(nextFrame chan *sdl.Surface) {
 
 	// Init Gameboy subsystems <3
 	gb.cpu.Init(gb.mmu)
+
+	return nil
 }
 
 // Cycle represents a single GameBoy CPU/Emulation Cycle (Fetch/Decode/Execute)

@@ -53,11 +53,26 @@ func main() {
 
 	// Initialize GameBoy
 	gemu := gb.GameBoy{}
-	gemu.Init(renderFrame)
+	if err := gemu.Init(renderFrame); err != nil {
+		fmt.Println("[!] gemu init failed - " + err.Error())
+		return
+	}
 
 	// Launch Renderer and Emulator :3
-	go render.Run(renderFrame, renderStopped, stopRender)
-	go gemu.Run(gbStopped, stopGB)
+	go func() {
+		err := render.Run(renderFrame, renderStopped, stopRender)
+		if err != nil {
+			fmt.Println("[!] render routine failed - " + err.Error())
+			close(renderStopped)
+		}
+	}()
+	go func() {
+		err := gemu.Run(gbStopped, stopGB)
+		if err != nil {
+			fmt.Println("[!] gemu routine failed - " + err.Error())
+			close(gbStopped)
+		}
+	}()
 
 	// Wait to close, gracefully <3
 	select {

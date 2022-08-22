@@ -69,13 +69,13 @@ func Run(frame chan *sdl.Surface, renderStopped chan struct{}, stopRender chan s
 	// Create SDL2 window
 	window, err := sdl.CreateWindow("gemu", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, 600, 800, sdl.WINDOW_SHOWN)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	// Create SDL2 renderer for our window, without V-Sync (since we want to control the FPS)
 	renderer, err := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	// Define our SDL Surface, which will represent the rendered version of the Gameboy's VRAM
@@ -112,7 +112,7 @@ func Run(frame chan *sdl.Surface, renderStopped chan struct{}, stopRender chan s
 		// Create our frame texture
 		texture, err := renderer.CreateTextureFromSurface(frameSurf)
 		if err != nil {
-			fmt.Println("Failed to create texture: " + err.Error())
+			return err
 		}
 		texture.SetBlendMode(sdl.BLENDMODE_BLEND)
 		texture.SetAlphaMod(200)
@@ -122,6 +122,7 @@ func Run(frame chan *sdl.Surface, renderStopped chan struct{}, stopRender chan s
 		renderer.Clear()
 		renderer.Copy(texture, nil, &sdl.Rect{X: 150, Y: 250, W: 200, H: 20})
 		renderer.Present()
+		texture.Destroy()
 
 		// How long did that take? Do we need to delay to maintain 60fps
 		frameTime := sdl.GetTicks64() - frameStart
