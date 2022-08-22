@@ -47,6 +47,7 @@ type CPU struct {
 	mem *mmu.MMU
 
 	// Clock Cycles
+	// Interesting discussion - https://www.reddit.com/r/EmuDev/comments/4o2t6k/how_do_you_emulate_specific_cpu_speeds/
 	cycles    uint32
 	maxCycles uint32
 
