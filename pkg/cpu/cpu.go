@@ -34,9 +34,11 @@ import (
 	"fmt"
 	"gemu/pkg/boot"
 	"gemu/pkg/mmu"
+	"time"
 )
 
-// Sharp SM83 CPU - https://gbdev.io/gb-opcodes/optables/errata
+// The DMG-01 had a Sharp LR35902 CPU (speculated to be a SM83 core), which is a hybrid of the Z80 and the 8080
+// https://gbdev.io/gb-opcodes/optables/errata
 type CPU struct {
 	// Registers
 	reg Registers
@@ -108,21 +110,34 @@ func (cpu *CPU) LoadBootROM() {
 
 // Step the CPU for a single instruction - Fetch, decode, execute
 func (cpu *CPU) Step() error {
-	//TODO: Handle CPU halting
+	// Is the CPU halted?
+	if !cpu.halted {
+		op := cpu.fetch()
+		instruction, valid := opcodes[op]
+		if !valid {
+			cpu.reg.PC++
+			return fmt.Errorf("opcode not implmented: 0x%x", op)
+		}
 
-	op := cpu.fetch()
-	instruction, valid := opcodes[op]
-	if !valid {
-		cpu.reg.PC++
-		return fmt.Errorf("opcode not implmented: 0x%x", op)
+		// Execute opcode
+		cpu.cycles += instruction.cycles
+		instruction.execute(cpu)
+
+		// Bits 0-3 of the Flag register are always zero, as they are unused.
+		cpu.reg.F &^= FlagUnused
+	} else {
+		// NOP NOP bby ~
+		cpu.cycles += 4
 	}
 
-	// Execute opcode
-	cpu.cycles += instruction.cycles
-	instruction.execute(cpu)
-
-	// Bits 0-3 of the Flag register are always zero, as they are unused.
-	cpu.reg.F &^= FlagUnused
+	// Check CPU Cycles
+	// TODO: Will need to check that this timeing is accurate...
+	//fmt.Printf("Cycles: %d, Max: %d\n", cpu.cycles, cpu.maxCycles)
+	if cpu.cycles > cpu.maxCycles {
+		fmt.Println("[CPU Timer]: Enforcing 4.194304 Mhz")
+		time.Sleep(1 * time.Second)
+		cpu.cycles = 0
+	}
 
 	return nil
 }

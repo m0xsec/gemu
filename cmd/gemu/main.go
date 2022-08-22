@@ -33,83 +33,40 @@ package main
 import (
 	"fmt"
 	"gemu/pkg/gb"
+	"gemu/pkg/render"
 
 	"github.com/veandco/go-sdl2/sdl"
-	"github.com/veandco/go-sdl2/ttf"
 )
 
 func main() {
 	fmt.Println("gemu")
 
-	// TODO: Put SDL rendering and emu in seperate goroutines - Use channels to communicate between goroutines
-	// Example: https://github.com/L-P/poussin/blob/master/main.go
+	// Setup communication channels
+	renderFrame := make(chan *sdl.Surface, 4)
+	renderStopped := make(chan struct{})
+	stopRender := make(chan struct{})
+	gbStopped := make(chan struct{})
+	stopGB := make(chan struct{})
 
-	// TODO: Initialize GameBoy
-	// Subsystems, etc, etc
+	// Initialize SDL
+	render.Init()
+
+	// Initialize GameBoy
 	gemu := gb.GameBoy{}
-	gemu.Init()
+	gemu.Init(renderFrame)
 
-	// Initialize SDL2
-	fmt.Println("Initializing SDL2...")
-	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
-		panic(err)
-	}
-	defer sdl.Quit()
+	// Launch Renderer and Emulator :3
+	go render.Run(renderFrame, renderStopped, stopRender)
+	go gemu.Run(gbStopped, stopGB)
 
-	// Initialize SDL2 TTF
-	fmt.Println("Initializing SDL2 TTF...")
-	err := ttf.Init()
-	if err != nil {
-		fmt.Println("Failed to initialize TTF: " + err.Error())
-	}
+	// Wait to close, gracefully <3
+	select {
+	case <-renderStopped:
+		close(stopGB)
+		<-gbStopped
 
-	// Create SDL2 window
-	window, err := sdl.CreateWindow("gemu", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, 600, 800, sdl.WINDOW_SHOWN)
-	if err != nil {
-		panic(err)
-	}
-	defer window.Destroy()
-
-	// Create SDL2 renderer
-	renderer, err := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
-	if err != nil {
-		panic(err)
-	}
-	defer renderer.Destroy()
-
-	// Emulator loop
-	emulating := true
-	for emulating {
-		// GameBoy CPU/Emulation Cycle (Fetch/Decode/Execute)
-		err := gemu.Cycle()
-		if err != nil {
-			fmt.Printf("[GB Cycle] Error: %s\n", err)
-		}
-
-		renderer.SetDrawColor(0, 0, 0, 255)
-		renderer.Clear()
-
-		// TODO: Rendering
-
-		// Render to screen <3
-		renderer.Present()
-
-		// Event handling
-		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
-			switch t := event.(type) {
-			case *sdl.QuitEvent:
-				println("kthxbai<3")
-				emulating = false
-
-			case *sdl.KeyboardEvent:
-				switch t.Keysym.Sym {
-				case sdl.K_ESCAPE:
-					println("kthxbai<3")
-					emulating = false
-				}
-			}
-		}
-
-		// TODO: Maintain FPS/Timers/Cycle Rate?
+	case <-gbStopped:
+		close(stopRender)
+		<-renderStopped
 	}
 }
