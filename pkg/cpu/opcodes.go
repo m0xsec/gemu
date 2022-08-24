@@ -1294,7 +1294,7 @@ var opcodes = map[uint8]struct {
 	}},
 
 	// TODO:
-	// DAA, SCF, CPL, CCF, AND, OR, SUB, SBC, XOR, CP (CP is a prefix opcode) - double check that these are what is remaining so nothing is missed :)
+	// DAA, SCF, CPL, CCF, AND, OR, SUB, SBC, XOR, CP - double check that these are what is remaining so nothing is missed :)
 
 	// ...
 
