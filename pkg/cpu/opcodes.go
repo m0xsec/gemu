@@ -1293,6 +1293,9 @@ var opcodes = map[uint8]struct {
 		cpu.reg.PC++
 	}},
 
+	// TODO:
+	// DAA, SCF, CPL, CCF, AND, OR, SUB, SBC, XOR, CP (CP is a prefix opcode) - double check that these are what is remaining so nothing is missed :)
+
 	// ...
 
 	// TODO: 16bit arithmetic/logic instructions
