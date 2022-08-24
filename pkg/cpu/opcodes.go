@@ -1070,6 +1070,79 @@ var opcodes = map[uint8]struct {
 		cpu.Add8(&cpu.reg.A, cpu.reg.A, false)
 		cpu.reg.PC++
 	}},
+
+	// 0x88 - ADC A, B - Add register B to register A with carry flag
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H C
+	0x88: {name: "ADC A, B", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Add8(&cpu.reg.A, cpu.reg.B, true)
+		cpu.reg.PC++
+	}},
+
+	// 0x89 - ADC A, C - Add register C to register A with carry flag
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H C
+	0x89: {name: "ADC A, C", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Add8(&cpu.reg.A, cpu.reg.C, true)
+		cpu.reg.PC++
+	}},
+
+	// 0x8A - ADC A, D - Add register D to register A with carry flag
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H C
+	0x8A: {name: "ADC A, D", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Add8(&cpu.reg.A, cpu.reg.D, true)
+		cpu.reg.PC++
+	}},
+
+	// 0x8B - ADC A, E - Add register E to register A with carry flag
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H C
+	0x8B: {name: "ADC A, E", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Add8(&cpu.reg.A, cpu.reg.E, true)
+		cpu.reg.PC++
+	}},
+
+	// 0x8C - ADC A, H - Add register H to register A with carry flag
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H C
+	0x8C: {name: "ADC A, H", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Add8(&cpu.reg.A, cpu.reg.H, true)
+		cpu.reg.PC++
+	}},
+
+	// 0x8D - ADC A, L - Add register L to register A with carry flag
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H C
+	0x8D: {name: "ADC A, L", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Add8(&cpu.reg.A, cpu.reg.L, true)
+		cpu.reg.PC++
+	}},
+
+	// 0x8E - ADC A, (HL) - Add value at memory address HL to register A with carry flag
+	// Cycles: 8
+	// Bytes: 1
+	// Flags: Z 0 H C
+	0x8E: {name: "ADC A, (HL)", cycles: 8, execute: func(cpu *CPU) {
+		cpu.Add8(&cpu.reg.A, cpu.mem.Read(cpu.HL()), true)
+		cpu.reg.PC++
+	}},
+
+	// 0x8F - ADC A, A - Add register A to register A with carry flag
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H C
+	0x8F: {name: "ADC A, A", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Add8(&cpu.reg.A, cpu.reg.A, true)
+		cpu.reg.PC++
+	}},
+
 	// ...
 
 	// TODO: 16bit arithmetic/logic instructions
