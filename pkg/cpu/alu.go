@@ -32,6 +32,32 @@ package cpu
 
 // ALU - Arithmetic Logic Unit
 
+// Inc8 - 8 bit increment
+// INC n - Increment register n
+// Flags affected:
+// Z - Set if result is zero.
+// N - Reset.
+// H - Set if carry from bit 3.
+// C - Not affected.
+func (cpu *CPU) Inc8(n *uint8) {
+	// Reset flags - except C
+	cpu.reg.F &= ^(FlagZ | FlagN | FlagH)
+
+	// Increment n
+	result := *n + 1
+
+	// Set flags
+	if result == 0 {
+		cpu.reg.F |= FlagZ
+	}
+	if (result & 0xF) == 0x00 {
+		cpu.reg.F |= FlagH
+	}
+
+	// Set n
+	*n = result
+}
+
 // Add8 - 8 bit addition and 8 bit carry addition
 // ADD A, n - Add n to A
 // ADC A, n - Add n to A with carry
