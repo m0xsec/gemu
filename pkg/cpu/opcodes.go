@@ -999,6 +999,81 @@ var opcodes = map[uint8]struct {
 	// Flags: Z N H C
 	/////////////////////////////////////////////////////////////////////////////////////////
 
+	// 0x04 - INC B - Increment register B
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H -
+	0x04: {name: "INC B", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Inc8(&cpu.reg.B)
+		cpu.reg.PC++
+	}},
+
+	// 0x0C - INC C - Increment register C
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H -
+	0x0C: {name: "INC C", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Inc8(&cpu.reg.C)
+		cpu.reg.PC++
+	}},
+
+	// 0x14 - INC D - Increment register D
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H -
+	0x14: {name: "INC D", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Inc8(&cpu.reg.D)
+		cpu.reg.PC++
+	}},
+
+	// 0x1C - INC E - Increment register E
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H -
+	0x1C: {name: "INC E", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Inc8(&cpu.reg.E)
+		cpu.reg.PC++
+	}},
+
+	// 0x24 - INC H - Increment register H
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H -
+	0x24: {name: "INC H", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Inc8(&cpu.reg.H)
+		cpu.reg.PC++
+	}},
+
+	// 0x2C - INC L - Increment register L
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H -
+	0x2C: {name: "INC L", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Inc8(&cpu.reg.L)
+		cpu.reg.PC++
+	}},
+
+	// 0x34 - INC (HL) - Increment memory address HL
+	// Cycles: 12
+	// Bytes: 1
+	// Flags: Z 0 H -
+	0x34: {name: "INC (HL)", cycles: 12, execute: func(cpu *CPU) {
+		addr := cpu.HL()
+		val := cpu.mem.Read(addr)
+		cpu.Inc8(&val)
+		cpu.mem.Write(addr, val)
+		cpu.reg.PC++
+	}},
+
+	// 0x3C - INC A - Increment register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H -
+	0x3C: {name: "INC A", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Inc8(&cpu.reg.A)
+		cpu.reg.PC++
+	}},
+
 	// 0x80 - ADD A, B - Add register B to register A
 	// Cycles: 4
 	// Bytes: 1

@@ -58,6 +58,34 @@ func (cpu *CPU) Inc8(n *uint8) {
 	*n = result
 }
 
+// Dec8 - 8 bit decrement
+// DEC n - Decrement register n
+// Flags affected:
+// Z - Set if result is zero.
+// N - Set.
+// H - Set if no borrow from bit 4.
+// C - Not affected.
+func (cpu *CPU) Dec8(n *uint8) {
+	// Reset flags - except C and N
+	cpu.reg.F &= ^(FlagZ | FlagH)
+
+	// Set Flag N
+	cpu.reg.F |= FlagN
+
+	// Decrement n
+	result := *n - 1
+
+	// Set flags
+	if result == 0 {
+		cpu.reg.F |= FlagZ
+	} else if (result & 0xF) == 0x00 {
+		cpu.reg.F |= FlagH
+	}
+
+	// Set n
+	*n = result
+}
+
 // Add8 - 8 bit addition and 8 bit carry addition
 // ADD A, n - Add n to A
 // ADC A, n - Add n to A with carry
