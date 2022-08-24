@@ -998,6 +998,78 @@ var opcodes = map[uint8]struct {
 	// Bytes: n
 	// Flags: Z N H C
 	/////////////////////////////////////////////////////////////////////////////////////////
+
+	// 0x80 - ADD A, B - Add register B to register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H C
+	0x80: {name: "ADD A, B", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Add8(&cpu.reg.A, cpu.reg.B)
+		cpu.reg.PC++
+	}},
+
+	// 0x81 - ADD A, C - Add register C to register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H C
+	0x81: {name: "ADD A, C", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Add8(&cpu.reg.A, cpu.reg.C)
+		cpu.reg.PC++
+	}},
+
+	// 0x82 - ADD A, D - Add register D to register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H C
+	0x82: {name: "ADD A, D", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Add8(&cpu.reg.A, cpu.reg.D)
+		cpu.reg.PC++
+	}},
+
+	// 0x83 - ADD A, E - Add register E to register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H C
+	0x83: {name: "ADD A, E", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Add8(&cpu.reg.A, cpu.reg.E)
+		cpu.reg.PC++
+	}},
+
+	// 0x84 - ADD A, H - Add register H to register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H C
+	0x84: {name: "ADD A, H", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Add8(&cpu.reg.A, cpu.reg.H)
+		cpu.reg.PC++
+	}},
+
+	// 0x85 - ADD A, L - Add register L to register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H C
+	0x85: {name: "ADD A, L", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Add8(&cpu.reg.A, cpu.reg.L)
+		cpu.reg.PC++
+	}},
+
+	// 0x86 - ADD A, (HL) - Add value at memory address HL to register A
+	// Cycles: 8
+	// Bytes: 1
+	// Flags: Z 0 H C
+	0x86: {name: "ADD A, (HL)", cycles: 8, execute: func(cpu *CPU) {
+		cpu.Add8(&cpu.reg.A, cpu.mem.Read(cpu.HL()))
+		cpu.reg.PC++
+	}},
+
+	// 0x87 - ADD A, A - Add register A to register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 H C
+	0x87: {name: "ADD A, A", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Add8(&cpu.reg.A, cpu.reg.A)
+		cpu.reg.PC++
+	}},
 	// ...
 
 	// TODO: 16bit arithmetic/logic instructions
