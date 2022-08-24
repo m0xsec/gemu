@@ -35,7 +35,7 @@ import "fmt"
 // https://gbdev.io/gb-opcodes/optables/
 // https://gbdev.io/gb-opcodes/Opcodes.json
 // https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
-// TODO: Could build the opcode table from the Opcodes.json file?
+// http://marc.rawer.de/Gameboy/Docs/GBCPUman.pdf
 
 var opcodes = map[uint8]struct {
 	name    string
@@ -1004,7 +1004,7 @@ var opcodes = map[uint8]struct {
 	// Bytes: 1
 	// Flags: Z 0 H C
 	0x80: {name: "ADD A, B", cycles: 4, execute: func(cpu *CPU) {
-		cpu.Add8(&cpu.reg.A, cpu.reg.B)
+		cpu.Add8(&cpu.reg.A, cpu.reg.B, false)
 		cpu.reg.PC++
 	}},
 
@@ -1013,7 +1013,7 @@ var opcodes = map[uint8]struct {
 	// Bytes: 1
 	// Flags: Z 0 H C
 	0x81: {name: "ADD A, C", cycles: 4, execute: func(cpu *CPU) {
-		cpu.Add8(&cpu.reg.A, cpu.reg.C)
+		cpu.Add8(&cpu.reg.A, cpu.reg.C, false)
 		cpu.reg.PC++
 	}},
 
@@ -1022,7 +1022,7 @@ var opcodes = map[uint8]struct {
 	// Bytes: 1
 	// Flags: Z 0 H C
 	0x82: {name: "ADD A, D", cycles: 4, execute: func(cpu *CPU) {
-		cpu.Add8(&cpu.reg.A, cpu.reg.D)
+		cpu.Add8(&cpu.reg.A, cpu.reg.D, false)
 		cpu.reg.PC++
 	}},
 
@@ -1031,7 +1031,7 @@ var opcodes = map[uint8]struct {
 	// Bytes: 1
 	// Flags: Z 0 H C
 	0x83: {name: "ADD A, E", cycles: 4, execute: func(cpu *CPU) {
-		cpu.Add8(&cpu.reg.A, cpu.reg.E)
+		cpu.Add8(&cpu.reg.A, cpu.reg.E, false)
 		cpu.reg.PC++
 	}},
 
@@ -1040,7 +1040,7 @@ var opcodes = map[uint8]struct {
 	// Bytes: 1
 	// Flags: Z 0 H C
 	0x84: {name: "ADD A, H", cycles: 4, execute: func(cpu *CPU) {
-		cpu.Add8(&cpu.reg.A, cpu.reg.H)
+		cpu.Add8(&cpu.reg.A, cpu.reg.H, false)
 		cpu.reg.PC++
 	}},
 
@@ -1049,7 +1049,7 @@ var opcodes = map[uint8]struct {
 	// Bytes: 1
 	// Flags: Z 0 H C
 	0x85: {name: "ADD A, L", cycles: 4, execute: func(cpu *CPU) {
-		cpu.Add8(&cpu.reg.A, cpu.reg.L)
+		cpu.Add8(&cpu.reg.A, cpu.reg.L, false)
 		cpu.reg.PC++
 	}},
 
@@ -1058,7 +1058,7 @@ var opcodes = map[uint8]struct {
 	// Bytes: 1
 	// Flags: Z 0 H C
 	0x86: {name: "ADD A, (HL)", cycles: 8, execute: func(cpu *CPU) {
-		cpu.Add8(&cpu.reg.A, cpu.mem.Read(cpu.HL()))
+		cpu.Add8(&cpu.reg.A, cpu.mem.Read(cpu.HL()), false)
 		cpu.reg.PC++
 	}},
 
@@ -1067,7 +1067,7 @@ var opcodes = map[uint8]struct {
 	// Bytes: 1
 	// Flags: Z 0 H C
 	0x87: {name: "ADD A, A", cycles: 4, execute: func(cpu *CPU) {
-		cpu.Add8(&cpu.reg.A, cpu.reg.A)
+		cpu.Add8(&cpu.reg.A, cpu.reg.A, false)
 		cpu.reg.PC++
 	}},
 	// ...
