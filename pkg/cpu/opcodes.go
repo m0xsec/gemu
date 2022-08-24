@@ -1074,6 +1074,81 @@ var opcodes = map[uint8]struct {
 		cpu.reg.PC++
 	}},
 
+	// 0x05 - DEC B - Decrement register B
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H -
+	0x05: {name: "DEC B", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Dec8(&cpu.reg.B)
+		cpu.reg.PC++
+	}},
+
+	// 0x0D - DEC C - Decrement register C
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H -
+	0x0D: {name: "DEC C", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Dec8(&cpu.reg.C)
+		cpu.reg.PC++
+	}},
+
+	// 0x15 - DEC D - Decrement register D
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H -
+	0x15: {name: "DEC D", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Dec8(&cpu.reg.D)
+		cpu.reg.PC++
+	}},
+
+	// 0x1D - DEC E - Decrement register E
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H -
+	0x1D: {name: "DEC E", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Dec8(&cpu.reg.E)
+		cpu.reg.PC++
+	}},
+
+	// 0x25 - DEC H - Decrement register H
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H -
+	0x25: {name: "DEC H", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Dec8(&cpu.reg.H)
+		cpu.reg.PC++
+	}},
+
+	// 0x2D - DEC L - Decrement register L
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H -
+	0x2D: {name: "DEC L", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Dec8(&cpu.reg.L)
+		cpu.reg.PC++
+	}},
+
+	// 0x35 - DEC (HL) - Decrement memory address HL
+	// Cycles: 12
+	// Bytes: 1
+	// Flags: Z 1 H -
+	0x35: {name: "DEC (HL)", cycles: 12, execute: func(cpu *CPU) {
+		addr := cpu.HL()
+		val := cpu.mem.Read(addr)
+		cpu.Dec8(&val)
+		cpu.mem.Write(addr, val)
+		cpu.reg.PC++
+	}},
+
+	// 0x3D - DEC A - Decrement register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H -
+	0x3D: {name: "DEC A", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Dec8(&cpu.reg.A)
+		cpu.reg.PC++
+	}},
+
 	// 0x80 - ADD A, B - Add register B to register A
 	// Cycles: 4
 	// Bytes: 1
