@@ -1293,8 +1293,40 @@ var opcodes = map[uint8]struct {
 		cpu.reg.PC++
 	}},
 
+	// 0x2F - CPL - Complement register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: - 1 1 -
+	0x2F: {name: "CPL", cycles: 4, execute: func(cpu *CPU) {
+		// Set flags N, H
+		cpu.reg.F |= FlagN
+		cpu.reg.F |= FlagH
+
+		// Complement register A
+		cpu.reg.A = ^cpu.reg.A
+		cpu.reg.PC++
+	}},
+
+	// 0x3F - CCF - Complement carry flag
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: - 0 0 C
+	0x3F: {name: "CCF", cycles: 4, execute: func(cpu *CPU) {
+		// If C flag is set, reset it
+		if cpu.reg.F&FlagC != 0 {
+			cpu.reg.F &= ^FlagC
+		} else {
+			// Otherwise set it
+			cpu.reg.F |= FlagC
+		}
+
+		// Complement carry flag
+		cpu.reg.F ^= FlagC
+		cpu.reg.PC++
+	}},
+
 	// TODO:
-	// DAA, SCF, CPL, CCF, AND, OR, SUB, SBC, XOR, CP - double check that these are what is remaining so nothing is missed :)
+	// DAA, SCF, AND, OR, SUB, SBC, XOR, CP - double check that these are what is remaining so nothing is missed :)
 
 	// ...
 
