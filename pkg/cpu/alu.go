@@ -102,7 +102,7 @@ func (cpu *CPU) Add8(a *uint8, n uint8, ADC bool) {
 	}
 
 	// Reset flags
-	cpu.reg.F &= FlagMask
+	cpu.reg.F &= ^FlagMask
 
 	// Add n to A
 	result := uint16(0)
@@ -133,4 +133,16 @@ func (cpu *CPU) Add8(a *uint8, n uint8, ADC bool) {
 
 	// Set A
 	*a = uint8(result)
+}
+
+// Sub8 - 8 bit subtraction and 8 bit carry subtraction
+// SUB A, n - Subtract n from A
+// SBC A, n - Subtract n from A with carry
+// Flags affected:
+// Z - Set if result is zero.
+// N - Set.
+// H - Set if no borrow from bit 4.
+// C - Set if no borrow.
+func (cpu *CPU) Sub8(a *uint8, n uint8, SBC bool) {
+
 }
