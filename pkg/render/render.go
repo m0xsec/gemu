@@ -73,7 +73,8 @@ func Run(frame chan *sdl.Surface, renderStopped chan struct{}, stopRender chan s
 	}
 
 	// Create SDL2 renderer for our window, without V-Sync (since we want to control the FPS)
-	renderer, err := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
+	//renderer, err := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
+	renderer, err := sdl.CreateRenderer(window, -1, sdl.RENDERER_SOFTWARE) // WSL2 doesn't support hardware acceleration
 	if err != nil {
 		return err
 	}
