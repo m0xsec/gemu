@@ -1325,6 +1325,15 @@ var opcodes = map[uint8]struct {
 		cpu.reg.PC++
 	}},
 
+	// 0x90 - SUB A - Subtract register A from register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H C
+	0x90: {name: "SUB A", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Sub8(&cpu.reg.A, cpu.reg.A, false)
+		cpu.reg.PC++
+	}},
+
 	// TODO:
 	// DAA, SCF, AND, OR, SUB, SBC, XOR, CP - double check that these are what is remaining so nothing is missed :)
 
