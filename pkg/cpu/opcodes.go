@@ -1469,6 +1469,43 @@ var opcodes = map[uint8]struct {
 		cpu.reg.PC++
 	}},
 
+	// 0x27 - DAA - Decimal adjust register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z - 0 C
+	0x27: {name: "DAA", cycles: 4, execute: func(cpu *CPU) {
+		// Implementation pulled from AWJ's post #433 here - https://forums.nesdev.org/viewtopic.php?f=20&t=15944
+		// thank you <3
+		// TODO: If this fails, it is probably due to how H and N flags are set in the other instructions.
+		//	     DAA is the only thing that actually uses those flags!
+		/*
+			// note: assumes a is a uint8_t and wraps from 0xff to 0
+			if (!n_flag) {  // after an addition, adjust if (half-)carry occurred or if result is out of bounds
+			if (c_flag || a > 0x99) { a += 0x60; c_flag = 1; }
+			if (h_flag || (a & 0x0f) > 0x09) { a += 0x6; }
+			} else {  // after a subtraction, only adjust if (half-)carry occurred
+			if (c_flag) { a -= 0x60; }
+			if (h_flag) { a -= 0x6; }
+			}
+			// these flags are always updated
+			z_flag = (a == 0); // the usual z flag
+			h_flag = 0; // h flag is always cleared
+		*/
+		if cpu.reg.A > 0x99 || cpu.reg.F&FlagC != 0 {
+			cpu.reg.A += 0x60
+			cpu.reg.F |= FlagC
+		}
+		if (cpu.reg.A&0x0F) > 0x09 || cpu.reg.F&FlagH != 0 {
+			cpu.reg.A += 0x06
+		}
+		cpu.reg.F &= FlagC
+		if cpu.reg.A == 0 {
+			cpu.reg.F |= FlagZ
+		}
+		cpu.reg.F &= FlagH
+		cpu.reg.PC++
+	}},
+
 	// TODO:
 	// DAA, SCF, AND, OR, XOR, CP - double check that these are what is remaining so nothing is missed :)
 
