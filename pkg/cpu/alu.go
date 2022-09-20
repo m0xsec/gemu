@@ -144,5 +144,45 @@ func (cpu *CPU) Add8(a *uint8, n uint8, ADC bool) {
 // H - Set if no borrow from bit 4.
 // C - Set if no borrow.
 func (cpu *CPU) Sub8(a *uint8, n uint8, SBC bool) {
+	// Get carry flag, for SBC operations
+	carry := uint16(0)
+	if cpu.reg.F&FlagC != 0 {
+		carry = 1
+	}
 
+	// Reset flags
+	cpu.reg.F &= ^FlagMask
+
+	// Set Flag N
+	cpu.reg.F |= FlagN
+
+	// Subtract n from A
+	result := uint16(0)
+	if SBC {
+		result = uint16(*a) - uint16(n) - carry
+
+		// Set flags
+		if uint16(*a)&0xF < uint16(n)&0xF+carry {
+			cpu.reg.F |= FlagH
+		}
+
+	} else {
+		result = uint16(*a) - uint16(n)
+
+		// Set flags
+		if uint16(*a)&0xF < uint16(n)&0xF {
+			cpu.reg.F |= FlagH
+		}
+	}
+
+	// Set remaining flags
+	if (result & 0xFF00) != 0 {
+		cpu.reg.F |= FlagC
+	}
+	if (result & 0x00FF) == 0 {
+		cpu.reg.F |= FlagZ
+	}
+
+	// Set A
+	*a = uint8(result)
 }
