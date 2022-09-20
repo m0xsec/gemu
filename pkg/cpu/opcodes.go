@@ -1325,12 +1325,147 @@ var opcodes = map[uint8]struct {
 		cpu.reg.PC++
 	}},
 
-	// 0x90 - SUB A - Subtract register A from register A
+	// 0x90 - SUB B - Subtract register B from register A
 	// Cycles: 4
 	// Bytes: 1
 	// Flags: Z 1 H C
-	0x90: {name: "SUB A", cycles: 4, execute: func(cpu *CPU) {
+	0x90: {name: "SUB B", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Sub8(&cpu.reg.A, cpu.reg.B, false)
+		cpu.reg.PC++
+	}},
+
+	// 0x91 - SUB C - Subtract register C from register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H C
+	0x91: {name: "SUB C", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Sub8(&cpu.reg.A, cpu.reg.C, false)
+		cpu.reg.PC++
+	}},
+
+	// 0x92 - SUB D - Subtract register D from register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H C
+	0x92: {name: "SUB D", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Sub8(&cpu.reg.A, cpu.reg.D, false)
+		cpu.reg.PC++
+	}},
+
+	// 0x93 - SUB E - Subtract register E from register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H C
+	0x93: {name: "SUB E", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Sub8(&cpu.reg.A, cpu.reg.E, false)
+		cpu.reg.PC++
+	}},
+
+	// 0x94 - SUB H - Subtract register H from register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H C
+	0x94: {name: "SUB H", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Sub8(&cpu.reg.A, cpu.reg.H, false)
+		cpu.reg.PC++
+	}},
+
+	// 0x95 - SUB L - Subtract register L from register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H C
+	0x95: {name: "SUB L", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Sub8(&cpu.reg.A, cpu.reg.L, false)
+		cpu.reg.PC++
+	}},
+
+	// 0x96 - SUB (HL) - Subtract value at memory address HL from register A
+	// Cycles: 8
+	// Bytes: 1
+	// Flags: Z 1 H C
+	0x96: {name: "SUB (HL)", cycles: 8, execute: func(cpu *CPU) {
+		cpu.Sub8(&cpu.reg.A, cpu.mem.Read(cpu.HL()), false)
+		cpu.reg.PC++
+	}},
+
+	// 0x97 - SUB A - Subtract register A from register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: 1 1 0 0
+	0x97: {name: "SUB A", cycles: 4, execute: func(cpu *CPU) {
 		cpu.Sub8(&cpu.reg.A, cpu.reg.A, false)
+		cpu.reg.PC++
+	}},
+
+	// 0x98 - SBC A, B - Subtract register B from register A with carry flag
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H C
+	0x98: {name: "SBC A, B", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Sub8(&cpu.reg.A, cpu.reg.B, true)
+		cpu.reg.PC++
+	}},
+
+	// 0x99 - SBC A, C - Subtract register C from register A with carry flag
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H C
+	0x99: {name: "SBC A, C", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Sub8(&cpu.reg.A, cpu.reg.C, true)
+		cpu.reg.PC++
+	}},
+
+	// 0x9A - SBC A, D - Subtract register D from register A with carry flag
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H C
+	0x9A: {name: "SBC A, D", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Sub8(&cpu.reg.A, cpu.reg.D, true)
+		cpu.reg.PC++
+	}},
+
+	// 0x9B - SBC A, E - Subtract register E from register A with carry flag
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H C
+	0x9B: {name: "SBC A, E", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Sub8(&cpu.reg.A, cpu.reg.E, true)
+		cpu.reg.PC++
+	}},
+
+	// 0x9C - SBC A, H - Subtract register H from register A with carry flag
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H C
+	0x9C: {name: "SBC A, H", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Sub8(&cpu.reg.A, cpu.reg.H, true)
+		cpu.reg.PC++
+	}},
+
+	// 0x9D - SBC A, L - Subtract register L from register A with carry flag
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H C
+	0x9D: {name: "SBC A, L", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Sub8(&cpu.reg.A, cpu.reg.L, true)
+		cpu.reg.PC++
+	}},
+
+	// 0x9E - SBC A, (HL) - Subtract value at memory address HL from register A with carry flag
+	// Cycles: 8
+	// Bytes: 1
+	// Flags: Z 1 H C
+	0x9E: {name: "SBC A, (HL)", cycles: 8, execute: func(cpu *CPU) {
+		cpu.Sub8(&cpu.reg.A, cpu.mem.Read(cpu.HL()), true)
+		cpu.reg.PC++
+	}},
+
+	// 0x9F - SBC A, A - Subtract register A from register A with carry flag
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 1 H C
+	0x9F: {name: "SBC A, A", cycles: 4, execute: func(cpu *CPU) {
+		cpu.Sub8(&cpu.reg.A, cpu.reg.A, true)
 		cpu.reg.PC++
 	}},
 
