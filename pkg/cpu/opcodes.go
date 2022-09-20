@@ -1470,7 +1470,7 @@ var opcodes = map[uint8]struct {
 	}},
 
 	// TODO:
-	// DAA, SCF, AND, OR, SUB, SBC, XOR, CP - double check that these are what is remaining so nothing is missed :)
+	// DAA, SCF, AND, OR, XOR, CP - double check that these are what is remaining so nothing is missed :)
 
 	// ...
 
