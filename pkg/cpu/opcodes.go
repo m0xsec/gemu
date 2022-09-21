@@ -1507,8 +1507,18 @@ var opcodes = map[uint8]struct {
 		cpu.reg.PC++
 	}},
 
+	// 0x37 - SCF - Set carry flag
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: - 0 0 1
+	0x37: {name: "SCF", cycles: 4, execute: func(cpu *CPU) {
+		cpu.reg.F |= FlagC
+		cpu.reg.F &^= FlagH | FlagN // &^ is the bitwise AND NOT operator (Bitclear)
+		cpu.reg.PC++
+	}},
+
 	// TODO:
-	// DAA, SCF, AND, OR, XOR, CP - double check that these are what is remaining so nothing is missed :)
+	// AND, OR, XOR, CP - double check that these are what is remaining so nothing is missed :)
 
 	// ...
 
