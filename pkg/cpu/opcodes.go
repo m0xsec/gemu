@@ -1474,6 +1474,7 @@ var opcodes = map[uint8]struct {
 	// Bytes: 1
 	// Flags: Z - 0 C
 	0x27: {name: "DAA", cycles: 4, execute: func(cpu *CPU) {
+		// General DAA implementation - https://www.scs.stanford.edu/nyu/04fa/lab/i386/DAA.htm
 		// Implementation pulled from AWJ's post #433 here - https://forums.nesdev.org/viewtopic.php?f=20&t=15944
 		// thank you <3
 		// TODO: If this fails, it is probably due to how H and N flags are set in the other instructions.
