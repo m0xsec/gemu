@@ -32,6 +32,8 @@ package render
 
 import (
 	"fmt"
+	"os"
+	"strings"
 
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/ttf"
@@ -58,6 +60,16 @@ func Init() error {
 
 // Run starts the rendering loop, which handles SDL events and renders the gameboy screen
 func Run(frame chan *sdl.Surface, renderStopped chan struct{}, stopRender chan struct{}) error {
+	// Check if we are running in WSL2 - hardware acceleration is not currently supported
+	wsl := false
+	ver, err := os.ReadFile("/proc/version")
+	if err != nil {
+		return err
+	}
+	if strings.Contains(string(ver), "microsoft") {
+		wsl = true
+	}
+
 	//runtime.LockOSThread()
 	rendering := true
 
@@ -73,8 +85,12 @@ func Run(frame chan *sdl.Surface, renderStopped chan struct{}, stopRender chan s
 	}
 
 	// Create SDL2 renderer for our window, without V-Sync (since we want to control the FPS)
-	renderer, err := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
-	// renderer, err := sdl.CreateRenderer(window, -1, sdl.RENDERER_SOFTWARE) // WSL2 doesn't support hardware acceleration
+	render_flags := sdl.RENDERER_ACCELERATED
+	if wsl {
+		render_flags = sdl.RENDERER_SOFTWARE
+	}
+
+	renderer, err := sdl.CreateRenderer(window, -1, uint32(render_flags))
 	if err != nil {
 		return err
 	}
