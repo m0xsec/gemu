@@ -1517,6 +1517,78 @@ var opcodes = map[uint8]struct {
 		cpu.reg.PC++
 	}},
 
+	// 0xA0 - AND B - Logical AND register B with register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 1 0
+	0xA0: {name: "AND B", cycles: 4, execute: func(cpu *CPU) {
+		cpu.And8(&cpu.reg.A, cpu.reg.B)
+		cpu.reg.PC++
+	}},
+
+	// 0xA1 - AND C - Logical AND register C with register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 1 0
+	0xA1: {name: "AND C", cycles: 4, execute: func(cpu *CPU) {
+		cpu.And8(&cpu.reg.A, cpu.reg.C)
+		cpu.reg.PC++
+	}},
+
+	// 0xA2 - AND D - Logical AND register D with register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 1 0
+	0xA2: {name: "AND D", cycles: 4, execute: func(cpu *CPU) {
+		cpu.And8(&cpu.reg.A, cpu.reg.D)
+		cpu.reg.PC++
+	}},
+
+	// 0xA3 - AND E - Logical AND register E with register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 1 0
+	0xA3: {name: "AND E", cycles: 4, execute: func(cpu *CPU) {
+		cpu.And8(&cpu.reg.A, cpu.reg.E)
+		cpu.reg.PC++
+	}},
+
+	// 0xA4 - AND H - Logical AND register H with register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 1 0
+	0xA4: {name: "AND H", cycles: 4, execute: func(cpu *CPU) {
+		cpu.And8(&cpu.reg.A, cpu.reg.H)
+		cpu.reg.PC++
+	}},
+
+	// 0xA5 - AND L - Logical AND register L with register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 1 0
+	0xA5: {name: "AND L", cycles: 4, execute: func(cpu *CPU) {
+		cpu.And8(&cpu.reg.A, cpu.reg.L)
+		cpu.reg.PC++
+	}},
+
+	// 0xA6 - AND (HL) - Logical AND value pointed to by HL with register A
+	// Cycles: 8
+	// Bytes: 1
+	// Flags: Z 0 1 0
+	0xA6: {name: "AND (HL)", cycles: 8, execute: func(cpu *CPU) {
+		cpu.And8(&cpu.reg.A, cpu.mem.Read(cpu.HL()))
+		cpu.reg.PC++
+	}},
+
+	// 0xA7 - AND A - Logical AND register A with register A
+	// Cycles: 4
+	// Bytes: 1
+	// Flags: Z 0 1 0
+	0xA7: {name: "AND A", cycles: 4, execute: func(cpu *CPU) {
+		cpu.And8(&cpu.reg.A, cpu.reg.A)
+		cpu.reg.PC++
+	}},
+
 	// TODO:
 	// AND, OR, XOR, CP - double check that these are what is remaining so nothing is missed :)
 

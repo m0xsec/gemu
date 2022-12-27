@@ -186,3 +186,29 @@ func (cpu *CPU) Sub8(a *uint8, n uint8, SBC bool) {
 	// Set A
 	*a = uint8(result)
 }
+
+// And8 - 8 bit logical AND
+// AND A, n - Logical AND n with A, result in A
+// Flags affected:
+// Z - Set if result is zero.
+// N - Reset.
+// H - Set.
+// C - Reset.
+func (cpu *CPU) And8(a *uint8, n uint8) {
+	// Reset flags
+	cpu.reg.F &= ^FlagMask
+
+	// Set Flag H
+	cpu.reg.F |= FlagH
+
+	// Logical AND n with A
+	result := *a & n
+
+	// Set flags
+	if result == 0 {
+		cpu.reg.F |= FlagZ
+	}
+
+	// Set A
+	*a = result
+}
